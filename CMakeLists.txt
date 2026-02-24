@@ -59,6 +59,13 @@ target_include_directories(omuraisu_controller INTERFACE
 )
 target_link_libraries(omuraisu_controller INTERFACE omuraisu_can)
 
+add_library(omuraisu_servo INTERFACE)
+target_include_directories(omuraisu_servo INTERFACE
+    $<BUILD_INTERFACE:${OMURAISU_INCLUDE_DIR}>
+    $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(omuraisu_servo INTERFACE omuraisu_can)
+
 # メインライブラリ（全てをまとめる）
 add_library(omuraisu INTERFACE)
 target_link_libraries(omuraisu INTERFACE
@@ -68,6 +75,7 @@ target_link_libraries(omuraisu INTERFACE
     omuraisu_can
     omuraisu_dji
     omuraisu_controller
+    omuraisu_servo
 )
 
 # サンプルのビルドオプション
@@ -86,7 +94,7 @@ endif()
 # インストール設定
 include(GNUInstallDirs)
 
-install(TARGETS coordinate omuraisu_pid omuraisu_chassis omuraisu_can omuraisu_dji omuraisu_controller omuraisu
+install(TARGETS coordinate omuraisu_pid omuraisu_chassis omuraisu_can omuraisu_dji omuraisu_controller omuraisu_servo omuraisu
     EXPORT omuraisu-targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
