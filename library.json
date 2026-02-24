@@ -35,6 +35,8 @@
     ]
   },
   "headers": [
+    "src/can/can_interface.hpp",
+    "src/can/can_mbed.hpp",
     "src/chassis/mecanum.hpp",
     "src/coordinate/coordinate.hpp",
     "src/pid/pid.hpp",

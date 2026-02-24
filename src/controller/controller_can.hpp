@@ -1,8 +1,8 @@
 #ifndef CONTROLLER_CAN_HPP
 #define CONTROLLER_CAN_HPP
 
+#include "can/can_interface.hpp"
 #include "controller_core.hpp"
-#include "dji/can_interface.hpp"
 
 namespace controller {
 
@@ -12,12 +12,12 @@ class CanController {
  public:
   /// @brief コンストラクタ
   /// @param can CANバスインターフェースへの参照
-  explicit CanController(dji::ICanBus& can) : can_(can) {}
+  explicit CanController(can::ICanBus& can) : can_(can) {}
 
   /// @brief CANからデータを読み取り
   /// @return 有効なコントローラーデータを受信したらtrue
   bool read() {
-    dji::CanMessage msg;
+    can::CanMessage msg;
     if (can_.read(msg)) {
       return parser_.parse(msg.id, msg.data);
     }
@@ -33,7 +33,7 @@ class CanController {
   const CanParser& parser() const { return parser_; }
 
  private:
-  dji::ICanBus& can_;
+  can::ICanBus& can_;
   CanParser parser_;
 };
 

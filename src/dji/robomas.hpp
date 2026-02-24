@@ -1,7 +1,7 @@
 #ifndef ROBOMAS_HPP
 #define ROBOMAS_HPP
 
-#include "can_interface.hpp"
+#include "can/can_interface.hpp"
 #include "robomas_core.hpp"
 
 namespace dji {
@@ -13,7 +13,7 @@ class Robomas {
  public:
   /// @brief コンストラクタ
   /// @param can CANバスインターフェースへの参照
-  explicit Robomas(ICanBus& can) : can_(can) {}
+  explicit Robomas(can::ICanBus& can) : can_(can) {}
 
   /// @brief 最大出力を設定
   /// @param max 最大出力値（絶対値）
@@ -22,7 +22,7 @@ class Robomas {
   /// @brief Robomasからデータを読み取り
   /// @return 読み取ったモーターのインデックス（0-7）、データなしの場合-1
   int read_data() {
-    CanMessage msg;
+    can::CanMessage msg;
     if (can_.read(msg)) {
       return core_.parse_received(msg.id, msg.data);
     }
@@ -48,7 +48,7 @@ class Robomas {
   /// @brief Robomasへ出力を書き込み
   /// @return 両グループの送信が成功した場合true
   bool write() {
-    CanMessage msg1, msg2;
+    can::CanMessage msg1, msg2;
     core_.get_output_group1(msg1.id, msg1.data);
     core_.get_output_group2(msg2.id, msg2.data);
 
@@ -78,7 +78,7 @@ class Robomas {
   const RobomasCore& core() const { return core_; }
 
  private:
-  ICanBus& can_;
+  can::ICanBus& can_;
   RobomasCore core_;
 };
 
