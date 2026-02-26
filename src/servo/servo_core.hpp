@@ -21,7 +21,7 @@ class ServoCore {
     std::memset(data_, value, kDataSize);
   }
 
-  void set_degree(const float degrees[kDataSize]) {
+  void set_degrees(const float degrees[kDataSize]) {
     for (size_t i = 0; i < kDataSize; ++i) {
       // 0-180度を0-255の範囲に変換
       data_[i] = static_cast<uint8_t>(degrees[i] / 180.0f * 255);
