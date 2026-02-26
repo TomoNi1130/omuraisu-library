@@ -45,8 +45,8 @@ class ServoCore {
     }
   }
 
-  can::CANMessage to_can_message() const {
-    can::CANMessage msg;
+  can::CanMessage to_can_message() const {
+    can::CanMessage msg;
     msg.id = id_;
     std::memcpy(msg.data, data_, kDataSize);
     msg.len = kDataSize;
