@@ -31,6 +31,20 @@ class ServoCore {
     }
   }
 
+  uint8_t get_degree(size_t index) const {
+    if (index >= kDataSize) {
+      return 0;  // インデックスが範囲外の場合は0を返す
+    }
+    return data_[index];
+  }
+
+  void get_degrees(float degrees[kDataSize]) const {
+    for (size_t i = 0; i < kDataSize; ++i) {
+      // 0-255の範囲を0-180度に変換
+      degrees[i] = static_cast<float>(data_[i]) / 255.0f * 180.0f;
+    }
+  }
+
   CANMessage to_can_message() const {
     CANMessage msg;
     msg.id = id_;
