@@ -86,9 +86,8 @@ struct ControllerData {
 
 /// @brief シリアル通信用のパケット構造体（COBS用）
 struct SerialPacket {
-  static constexpr uint8_t HEADER = 0xAA;
+  static constexpr uint8_t header = 0xAA;
 
-  uint8_t header;  ///< 0xAA（固定）
   int8_t left_x;
   int8_t left_y;
   int8_t right_x;
@@ -97,6 +96,27 @@ struct SerialPacket {
   uint8_t r2_trigger;
   uint16_t buttons;
   uint8_t checksum;
+
+  SerialPacket()
+      : left_x(0),
+        left_y(0),
+        right_x(0),
+        right_y(0),
+        l2_trigger(0),
+        r2_trigger(0),
+        buttons(0) {
+    checksum = calc_checksum();
+  }
+  SerialPacket(const ControllerData& data)
+      : left_x(static_cast<int8_t>(data.left_x * 127)),
+        left_y(static_cast<int8_t>(data.left_y * 127)),
+        right_x(static_cast<int8_t>(data.right_x * 127)),
+        right_y(static_cast<int8_t>(data.right_y * 127)),
+        l2_trigger(static_cast<uint8_t>(data.l2_trigger * 255)),
+        r2_trigger(static_cast<uint8_t>(data.r2_trigger * 255)),
+        buttons(data.buttons) {
+    checksum = calc_checksum();
+  }
 
   /// @brief チェックサムを計算
   uint8_t calc_checksum() const {
@@ -118,12 +138,12 @@ struct SerialPacket {
   /// @brief ControllerDataに変換
   ControllerData to_controller_data() const {
     ControllerData data;
-    data.left_x = left_x;
-    data.left_y = left_y;
-    data.right_x = right_x;
-    data.right_y = right_y;
-    data.l2_trigger = l2_trigger;
-    data.r2_trigger = r2_trigger;
+    data.left_x = left_x / 127.0f;
+    data.left_y = left_y / 127.0f;
+    data.right_x = right_x / 127.0f;
+    data.right_y = right_y / 127.0f;
+    data.l2_trigger = l2_trigger / 255.0f;
+    data.r2_trigger = r2_trigger / 255.0f;
     data.buttons = buttons;
     return data;
   }
