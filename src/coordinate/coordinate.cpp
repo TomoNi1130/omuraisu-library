@@ -92,7 +92,6 @@ CoordinatePolar::CoordinatePolar(const Coordinate& other) noexcept {
 void convert_ang(CoordinatePolar& p, const float& ang) noexcept {
   const float diff = ang - p.axis_ang;
   p.theta -= diff;
-  p.ang -= diff;
   p.axis_ang = ang;
 }
 
